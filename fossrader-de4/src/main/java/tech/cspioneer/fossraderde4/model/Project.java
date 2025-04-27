@@ -27,4 +27,10 @@ public class Project {
     private List<String> tags;      // 项目标签/技术栈
     
     private Integer likes;          // 项目点赞/收藏数
+    
+    private String iconUrl;         // 项目图标URL
+    
+    private String ownerAvatarUrl;  // 项目所有者头像URL
+    
+    private List<String> imageUrls; // 项目介绍图片URL列表
 } 
