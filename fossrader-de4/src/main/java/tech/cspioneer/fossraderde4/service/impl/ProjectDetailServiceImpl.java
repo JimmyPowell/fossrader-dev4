@@ -50,6 +50,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
         projectDetail.setScreenshots(projectDetailInfo.getScreenshots());
         projectDetail.setDetailedDescription(projectDetailInfo.getDetailedDescription());
         projectDetail.setIconUrl(projectDetailInfo.getIconUrl());
+        projectDetail.setProjectAddress(projectDetailInfo.getProjectAddress());
         
         return projectDetailRepository.save(projectDetail);
     }

@@ -79,6 +79,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setLikes(projectDetails.getLikes());
         project.setIconUrl(projectDetails.getIconUrl());
         project.setImageUrls(projectDetails.getImageUrls());
+        project.setProjectAddress(projectDetails.getProjectAddress());
         
         Project updatedProject = projectRepository.save(project);
         log.debug("项目更新成功，ID: {}", updatedProject.getId());
@@ -151,6 +152,8 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDescription(projectDetail.getDescription());
         project.setTags(projectDetail.getTags());
         project.setLikes(projectDetail.getStars() != null ? projectDetail.getStars() / 10 : 0);  // 从stars估算likes
+        project.setProjectAddress(projectDetail.getProjectAddress());
+        projectDetail.setProjectAddress(projectDetail.getProjectAddress());
         
         // 处理iconUrl，确保不为空
         if (projectDetail.getIconUrl() != null && !projectDetail.getIconUrl().isEmpty()) {

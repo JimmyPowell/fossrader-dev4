@@ -26,6 +26,7 @@ interface Project {
   screenshots?: string[]; // ProjectDetail中使用screenshots代替imageUrls
   keywords?: string[];
   detailedDescription?: string;
+  projectAddress?: string; // 新增：项目原始地址
 }
 
 // 后端API的基础URL
@@ -176,9 +177,9 @@ export default function ProjectDetailPage() {
 
             {/* TODO: 访问官网链接需要从后端获取或配置 */}
             <a
-              href="#" // 暂时用 #
-              target="_blank" // 在新标签页打开
-              rel="noopener noreferrer" // 安全性考虑
+              href={project.projectAddress || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-100"
             >
               访问官网

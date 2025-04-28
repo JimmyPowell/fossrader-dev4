@@ -32,6 +32,8 @@ public class Project {
     
     private List<String> imageUrls; // 项目介绍图片URL列表
     
+    private String projectAddress; // 项目原始地址（如GitHub链接）
+    
     // 显式定义getter方法
     // public String getId() {
     //     return this.id;

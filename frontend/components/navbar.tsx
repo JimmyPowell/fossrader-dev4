@@ -29,6 +29,14 @@ export default function Navbar() {
             >
               关于
             </Link>
+            <a
+              href="https://jcn4537ak90u.feishu.cn/share/base/form/shrcnGxPxhz6wrljKdCShX42k5p"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-medium text-blue-100 hover:text-white"
+            >
+              建议反馈
+            </a>
           </nav>
         </div>
 

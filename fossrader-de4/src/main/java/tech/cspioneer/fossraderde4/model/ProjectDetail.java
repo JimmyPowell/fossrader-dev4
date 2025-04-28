@@ -39,4 +39,6 @@ public class ProjectDetail {
     private String detailedDescription;     // 项目详细描述
     
     private String iconUrl;                 // 项目图标URL
+
+    private String projectAddress;          // 项目原始地址（如GitHub链接）
 } 
