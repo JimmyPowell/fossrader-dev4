@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface ProjectCardProps {
   id: string | number
@@ -9,9 +10,10 @@ interface ProjectCardProps {
   description: string
   tags: string[]
   likes: number
+  iconUrl?: string // 添加可选的iconUrl属性
 }
 
-export default function ProjectCard({ id, title, owner, source, description, tags, likes }: ProjectCardProps) {
+export default function ProjectCard({ id, title, owner, source, description, tags, likes, iconUrl }: ProjectCardProps) {
   // 获取所有者名称的首字母作为头像
   const ownerInitial = owner.charAt(0).toUpperCase()
 
@@ -22,22 +24,41 @@ export default function ProjectCard({ id, title, owner, source, description, tag
 
         {/* 项目图标 */}
         <div className="flex h-auto w-[70px] items-center justify-center py-2 pl-3 pr-1">
-          <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-100 text-gray-400">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          {iconUrl ? (
+            <div className="h-10 w-10 overflow-hidden rounded">
+              <Image 
+                src={iconUrl}
+                alt={`${title} 图标`}
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  // 图片加载失败时显示默认图标
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null; // 防止无限循环
+                  target.style.display = 'none'; // 隐藏失败的图片
+                  // 由于我们不能在这里动态渲染SVG，父元素会回退到默认显示
+                }}
               />
-            </svg>
-          </div>
+            </div>
+          ) : (
+            <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-100 text-gray-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+          )}
         </div>
 
         {/* 右侧内容区域 */}

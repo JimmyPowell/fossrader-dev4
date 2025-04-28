@@ -151,7 +151,20 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDescription(projectDetail.getDescription());
         project.setTags(projectDetail.getTags());
         project.setLikes(projectDetail.getStars() != null ? projectDetail.getStars() / 10 : 0);  // 从stars估算likes
-        project.setIconUrl(projectDetail.getIconUrl()); // 使用详情中的图标URL
+        
+        // 处理iconUrl，确保不为空
+        if (projectDetail.getIconUrl() != null && !projectDetail.getIconUrl().isEmpty()) {
+            project.setIconUrl(projectDetail.getIconUrl()); 
+            log.debug("使用详情中的图标URL: {}", projectDetail.getIconUrl());
+        } else {
+            // 设置默认图标URL
+            project.setIconUrl("/placeholder-icon.svg"); 
+            log.debug("使用默认图标URL");
+            
+            // 同时更新项目详情中的图标URL
+            projectDetail.setIconUrl("/placeholder-icon.svg");
+        }
+        
         project.setImageUrls(projectDetail.getScreenshots());  // 使用screenshots作为imageUrls
         
         // 2. 保存基本项目信息
