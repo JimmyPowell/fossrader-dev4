@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import tech.cspioneer.fossraderde4.controller.dto.ApiResponse;
 import tech.cspioneer.fossraderde4.controller.dto.PageResponseDTO;
 import tech.cspioneer.fossraderde4.model.Project;
+import tech.cspioneer.fossraderde4.model.ProjectDetail;
+import tech.cspioneer.fossraderde4.service.ProjectDetailService;
 import tech.cspioneer.fossraderde4.service.ProjectService;
 
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.Map;
 public class ProjectController {
     
     private final ProjectService projectService;
+    private final ProjectDetailService projectDetailService;
     
     /**
      * 获取所有项目
@@ -178,5 +181,22 @@ public class ProjectController {
         ApiResponse<Map<String, Long>> response = ApiResponse.success("获取项目总数成功", countMap);
         log.debug("项目总数：{}", count);
         return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * 统一创建完整项目（包括基本信息和详情）
+     * @param projectDetail 完整的项目详情
+     * @return 包含创建后的项目基本信息和详情的响应
+     */
+    @PostMapping("/complete")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> createCompleteProject(@RequestBody ProjectDetail projectDetail) {
+        log.debug("接收到创建完整项目的请求，项目内容：{}", projectDetail);
+        
+        // 调用服务层方法处理创建完整项目的逻辑
+        Map<String, Object> result = projectService.createCompleteProject(projectDetail);
+        log.debug("项目创建成功，ID：{}", ((Project)result.get("project")).getId());
+        
+        ApiResponse<Map<String, Object>> response = ApiResponse.success("项目创建成功", result);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 } 

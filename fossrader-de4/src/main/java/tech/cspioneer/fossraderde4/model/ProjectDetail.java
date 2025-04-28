@@ -37,4 +37,6 @@ public class ProjectDetail {
     private List<String> screenshots;       // 项目截图URL数组
     
     private String detailedDescription;     // 项目详细描述
+    
+    private String iconUrl;                 // 项目图标URL
 } 

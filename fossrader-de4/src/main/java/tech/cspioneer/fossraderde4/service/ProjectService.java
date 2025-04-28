@@ -3,8 +3,10 @@ package tech.cspioneer.fossraderde4.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import tech.cspioneer.fossraderde4.model.Project;
+import tech.cspioneer.fossraderde4.model.ProjectDetail;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目服务接口
@@ -78,4 +80,11 @@ public interface ProjectService {
      * @return 项目总数
      */
     long getProjectCount();
+    
+    /**
+     * 创建完整项目（包括基本信息和详情）
+     * @param projectDetail 完整的项目详情
+     * @return 包含创建后的项目基本信息和详情的Map
+     */
+    Map<String, Object> createCompleteProject(ProjectDetail projectDetail);
 } 

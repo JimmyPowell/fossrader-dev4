@@ -5,12 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tech.cspioneer.fossraderde4.exception.ResourceNotFoundException;
 import tech.cspioneer.fossraderde4.model.Project;
+import tech.cspioneer.fossraderde4.model.ProjectDetail;
+import tech.cspioneer.fossraderde4.repository.ProjectDetailRepository;
 import tech.cspioneer.fossraderde4.repository.ProjectRepository;
 import tech.cspioneer.fossraderde4.service.ProjectService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目服务实现类
@@ -21,6 +26,7 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
     
     private final ProjectRepository projectRepository;
+    private final ProjectDetailRepository projectDetailRepository;
     
     @Override
     public List<Project> getAllProjects() {
@@ -72,7 +78,6 @@ public class ProjectServiceImpl implements ProjectService {
         project.setTags(projectDetails.getTags());
         project.setLikes(projectDetails.getLikes());
         project.setIconUrl(projectDetails.getIconUrl());
-        project.setOwnerAvatarUrl(projectDetails.getOwnerAvatarUrl());
         project.setImageUrls(projectDetails.getImageUrls());
         
         Project updatedProject = projectRepository.save(project);
@@ -120,5 +125,51 @@ public class ProjectServiceImpl implements ProjectService {
         long count = projectRepository.count();
         log.debug("项目总数: {}", count);
         return count;
+    }
+    
+    /**
+     * 创建完整项目（包括基本信息和详情）
+     * @param projectDetail 完整的项目详情
+     * @return 包含创建后的项目基本信息和详情的Map
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> createCompleteProject(ProjectDetail projectDetail) {
+        log.debug("创建完整项目: {}", projectDetail);
+        
+        // 1. 从项目详情中提取基本项目信息
+        Project project = new Project();
+        
+        if (projectDetail.getId() != null && !projectDetail.getId().isEmpty()) {
+            project.setId(projectDetail.getId());
+        }
+        
+        // 设置基本项目属性
+        project.setTitle(projectDetail.getTitle());
+        project.setOwner(projectDetail.getAuthor());  // author 映射到 owner
+        project.setSource(projectDetail.getPlatform());  // platform 映射到 source
+        project.setDescription(projectDetail.getDescription());
+        project.setTags(projectDetail.getTags());
+        project.setLikes(projectDetail.getStars() != null ? projectDetail.getStars() / 10 : 0);  // 从stars估算likes
+        project.setIconUrl(projectDetail.getIconUrl()); // 使用详情中的图标URL
+        project.setImageUrls(projectDetail.getScreenshots());  // 使用screenshots作为imageUrls
+        
+        // 2. 保存基本项目信息
+        Project savedProject = projectRepository.save(project);
+        log.debug("项目基本信息创建成功，ID: {}", savedProject.getId());
+        
+        // 3. 确保项目详情使用相同的ID
+        projectDetail.setId(savedProject.getId());
+        
+        // 4. 保存项目详情
+        ProjectDetail savedDetail = projectDetailRepository.save(projectDetail);
+        log.debug("项目详情创建成功，ID: {}", savedDetail.getId());
+        
+        // 5. 返回结果
+        Map<String, Object> result = new HashMap<>();
+        result.put("project", savedProject);
+        result.put("detail", savedDetail);
+        
+        return result;
     }
 } 

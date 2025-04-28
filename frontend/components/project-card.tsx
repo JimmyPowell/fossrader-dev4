@@ -20,7 +20,7 @@ export default function ProjectCard({ id, title, owner, source, description, tag
       <div className="relative flex overflow-hidden bg-white transition-colors hover:bg-gray-50">
         <div className="absolute left-0 top-0 h-full w-0.5 bg-transparent transition-colors group-hover:bg-blue-500"></div>
 
-        {/* 左侧图片区域 - 调整了内边距，使图片不充满整个区域 */}
+        {/* 项目图标 */}
         <div className="flex h-auto w-[70px] items-center justify-center py-2 pl-3 pr-1">
           <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-100 text-gray-400">
             <svg
@@ -52,10 +52,8 @@ export default function ProjectCard({ id, title, owner, source, description, tag
           </div>
 
           <div className="flex items-center">
-            <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-gray-200 text-[8px] font-medium">
-              {ownerInitial}
-            </div>
-            <span className="ml-1 text-[10px] text-gray-600">{owner}</span>
+            {/* 删除圆形"项"字占位符，直接显示作者名 */}
+            <span className="text-[10px] text-gray-600">{owner}</span>
             <span className="ml-1 text-[10px] text-gray-400">from {source}</span>
           </div>
 

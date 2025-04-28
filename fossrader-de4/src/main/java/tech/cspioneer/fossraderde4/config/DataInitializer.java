@@ -107,7 +107,8 @@ public class DataInitializer implements CommandLineRunner {
                 "完善的文档和示例，以及活跃的社区支持。" + project.getDescription() + 
                 "适用于各种应用场景，获得了广泛的使用和好评。"
             );
-            
+            detail.setIconUrl(project.getIconUrl()); // 设置图标URL
+
             projectDetailRepository.save(detail);
         }
         
@@ -125,6 +126,7 @@ public class DataInitializer implements CommandLineRunner {
         project.setDescription(description);
         project.setTags(tags);
         project.setLikes(likes);
+        project.setIconUrl("/placeholder-icon.svg");
         return project;
     }
 } 
