@@ -33,4 +33,9 @@ public class Project {
     private String ownerAvatarUrl;  // 项目所有者头像URL
     
     private List<String> imageUrls; // 项目介绍图片URL列表
+    
+    // 显式定义getter方法
+    // public String getId() {
+    //     return this.id;
+    // }
 } 

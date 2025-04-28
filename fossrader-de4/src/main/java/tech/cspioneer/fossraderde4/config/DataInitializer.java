@@ -1,7 +1,8 @@
 package tech.cspioneer.fossraderde4.config;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import tech.cspioneer.fossraderde4.model.Project;
@@ -18,18 +19,19 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class DataInitializer implements CommandLineRunner {
+    
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
     
     private final ProjectRepository projectRepository;
     private final ProjectDetailRepository projectDetailRepository;
     
     @Override
     public void run(String... args) throws Exception {
-        log.info("开始初始化演示数据");
+        logger.info("开始初始化演示数据");
         initProjects();
         initProjectDetails();
-        log.info("演示数据初始化完成");
+        logger.info("演示数据初始化完成");
     }
     
     /**
@@ -37,7 +39,7 @@ public class DataInitializer implements CommandLineRunner {
      */
     private void initProjects() {
         if (projectRepository.count() > 0) {
-            log.info("项目数据已存在，跳过初始化");
+            logger.info("项目数据已存在，跳过初始化");
             return;
         }
         
@@ -64,7 +66,7 @@ public class DataInitializer implements CommandLineRunner {
         );
         
         projectRepository.saveAll(projects);
-        log.info("初始化了 {} 个项目数据", projects.size());
+        logger.info("初始化了 {} 个项目数据", projects.size());
     }
     
     /**
@@ -72,14 +74,14 @@ public class DataInitializer implements CommandLineRunner {
      */
     private void initProjectDetails() {
         if (projectDetailRepository.count() > 0) {
-            log.info("项目详情数据已存在，跳过初始化");
+            logger.info("项目详情数据已存在，跳过初始化");
             return;
         }
         
         // 获取已创建的项目列表
         List<Project> projects = projectRepository.findAll();
         if (projects.isEmpty()) {
-            log.warn("未找到项目数据，无法初始化项目详情");
+            logger.warn("未找到项目数据，无法初始化项目详情");
             return;
         }
         
@@ -109,7 +111,7 @@ public class DataInitializer implements CommandLineRunner {
             projectDetailRepository.save(detail);
         }
         
-        log.info("初始化了 {} 个项目详情数据", projects.size());
+        logger.info("初始化了 {} 个项目详情数据", projects.size());
     }
     
     /**
